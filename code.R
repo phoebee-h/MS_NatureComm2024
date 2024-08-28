@@ -60,23 +60,24 @@ seurat_obj_mnn[["BE.main"]] <- obj_SCE.main$labels
 ##---------- [DEGs/ GSEA] ----------##
 # group1 and group2 are defined by different condition
 data.GMT_H <- clusterProfiler::read.gmt("h.all.v2022.1.Hs.symbols.gmt")
-DEGlist <- FindMarkers(seurat_obj_mnn, only.pos = FALSE, min.pct = 0.25, logfc.threshold = 0,
-									ident.1 = "group1", 
-									ident.2 = "group2")
+DEGlist <- FindMarkers(seurat_obj_mnn, only.pos = FALSE, 
+		       min.pct = 0.25, logfc.threshold = 0, 
+		       ident.1 = "group1",
+		       ident.2 = "group2")
 
 genelist <- DEGlist$avg_log2FC
 names(genelist) <- DEGlist$symbol
 genelist <- sort(genelist, decreasing=TRUE) 
 gsea.gmt <- GSEA(genelist, 
-				 maxGSSize = 500, 
-				 minGSSize = 10,
-				 nPerm = 1000,
-				 TERM2GENE = data.GMT, 
-				 pvalueCutoff = 1, 
-				 by="fgsea", seed = TRUE)
+		 maxGSSize = 500, 
+		 minGSSize = 10,
+		 nPerm = 1000,
+		 TERM2GENE = data.GMT, 
+		 pvalueCutoff = 1, 
+		 by="fgsea", seed = TRUE)
 				 
 				 
 ##---------- [CellChat] ----------##
-# Each steps could be followed by the official website
+# See the Cellchat official website for more details
 # We used the older version of CellChat v1.1.3 back then, some functions might be changed.
 # https://htmlpreview.github.io/?https://github.com/jinworks/CellChat/blob/master/tutorial/Comparison_analysis_of_multiple_datasets.html
